@@ -5,7 +5,7 @@ class Solution:
         print(f"buses: {buses}")
         print(f"passengers: {passengers}")
         capacities = [capacity]*len(buses)
-
+        last_passenger_time = None
         passenger = 0
         time = 0
         for  bus in buses:
@@ -17,8 +17,7 @@ class Solution:
             last_passenger_time = passengers[passenger-1]
         else:
             return bus
-        print(last_passenger_time)
-        if cap > 0 and last_passenger_time < bus:
+        if (cap > 0 and last_passenger_time < bus):
             return bus
              
         
