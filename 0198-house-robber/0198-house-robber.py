@@ -1,15 +1,22 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        dp = [-1 for x in range(len(nums) + 1)]
-        return self.helper(dp, nums, 0)
-
-    def helper(self,dp,  nums, cur_idx):
-        if cur_idx >= len(nums):
+        if len(nums) == 0:
             return 0
+        if len(nums) == 1:
+            return nums[0]
+            
+        n = len(nums)
+        dp = [0 for i in range(n)]
 
-        if dp[cur_idx] == -1:
-            steelcurrent = nums[cur_idx] + self.helper(dp, nums, cur_idx + 2)
-            skipcurrent = self.helper(dp, nums, cur_idx + 1)
-            dp[cur_idx] = max(steelcurrent, skipcurrent)
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1]) 
 
-        return dp[cur_idx]
+        for i in range(2, n):
+            steelcurrent = nums[i] + dp[i-2]
+            skipcurrent = dp[i-1]
+            dp[i] = max(steelcurrent, skipcurrent)
+
+        return dp[n-1]
+
+        
+
