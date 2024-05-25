@@ -1,14 +1,12 @@
 from collections import defaultdict, deque
 class Solution:
-    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
-        # If we find an edge which connects two nodes , which were already connected , 
-        # then we will get an edge which will form a cycle
-        
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:       
         graph = defaultdict(list)
-        # Lets start by constructing graph,see the 2 nodes we get is already connected or not
-        # if not connected we will add the edges for the node in our graph
+
+        # Logic exactly same as bfs , but bfs replaced with dfs traversal
         for a, b in edges:
-            if self.isalreadyconnected(graph, a, b):
+            visited = set()  # we make a fresh visited because we call dfs for every pair of edges
+            if self.isalreadyconnected(graph, visited, a, b):
                 return [a, b]
             else:
                 graph[a].append(b)
@@ -17,42 +15,19 @@ class Solution:
         return None # since one of the constraints states : The given graph is connected.,
                     #  so we dont have to care about the else case  
 
+    # dfs function to check if path exists between nodes a and b
+    def isalreadyconnected(self, graph, visited, a, b):
+        if a == b:
+            return True
 
+        # mark u as visited
+        visited.add(a)
 
+        # iterate through all the neighbors of u and if they are not visited call dfs on them
+        for neighbour in graph[a]:
+            if neighbour not in visited:
 
-    #  what we can do is, we will traverse through neighbours of node A, 
-    # these neighbours are the ones before adding the edge for a, b so technically if 
-    # there is no cyle , then it should not exist
-    # and try to see we reach b, if we do, then its connected else not connected
-    def isalreadyconnected(self, graph, a, b):
-        visited = set()
-        queue = deque([a])
-        
-        while queue:
-            node = queue.popleft()
-            if node == b:  # check if node obtained from q is b
-                return True
-            
-            # add the node to visited to avoid visiting the already visited node
-            visited.add(node)
-
-            for neighbour in graph[node]:
-                if neighbour not in visited:
-                    queue.append(neighbour)
-        
-        # if after checking out all the neighbouring nodes ,
-        #  we dont find node:b then return False
+                # we have to reach b, so parent will be neigbour and child will be b
+                if self.isalreadyconnected(graph, visited, neighbour, b):
+                    return True
         return False
-
-
-
-            
-
-
-
-
-        
-
-        
-
-        
