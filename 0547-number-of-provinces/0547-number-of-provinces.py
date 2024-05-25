@@ -34,7 +34,3 @@ class Solution:
                 dfs(i)
 
         return count
-
-
-
-
